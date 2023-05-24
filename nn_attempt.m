@@ -1,8 +1,26 @@
+aExPaths = "C:\Users\Nguyen Family\Downloads\DIC-C2DH-HeLa1\00_experiment";
+aVer = 'bob';
+%%% aRegExp?????
 
-seqPath = 'C:/Dropbox/Demos/MuSC/3 min aquisition__C02_10_001';
-% Load outlines and tracks of cells saved with the label '_demo'.
-cells = LoadCells(seqPath, '_demo');
-% Remove detected objects that are not cells.
-cells = AreCells(cells);
+% Convert string inupt into a cell array with one cell.
+if ~iscell(aExPaths)
+    aExPaths = {aExPaths};
+end
+% Find all used image sequences in all experiments.
+allSeqDirs = {};
+allSeqPaths = {};
+for i = 1:length(aExPaths)
+    seqDirs = GetUseSeq(aExPaths{i});
+    allSeqDirs = [allSeqDirs; seqDirs(:)]; %#ok<AGROW>
+    allSeqPaths = [allSeqPaths; strcat(aExPaths{i}, filesep, seqDirs(:))]; %#ok<AGROW>
+end
+% Run the tracking.
+parfor i = 1:length(allSeqPaths)
+    if ~isempty(regexp(allSeqDirs{i}, aRegExp, 'once')) &&...
+            ~HasVersion(allSeqPaths{i}, aVer)
+        imData = ImageData(allSeqPaths{i}, 'version', aVer);
+        SaveTrack(imData)
+    end
+end
 
-% writing the scripts: https://www.youtube.com/watch?v=Dg2yeDmfHO4&list=PLWNt_wdNK0Rp3RoAuUG3SK2B-CejdDrW6&index=13&ab_channel=KlasMagnusson
+

@@ -12,12 +12,12 @@
 % is 'C:/Dropbox/Demos/MuSC', and the name of the image sequence is
 % '3 min aquisition__C02_10_001'. The folder "seqPath" contains individual
 % tif-images for the different time points of the image sequence.
-seqPath = 'C:/Dropbox/Demos/MuSC/3 min aquisition__C02_10_001';
+seqPath = 'C:\Users\Nguyen Family\Downloads\DIC-C2DH-HeLa1\00_experiment';
 
 % Object with information about the image sequence.
 imData = ImageData(seqPath);
 % Load outlines and tracks of cells saved with the label '_demo'.
-cells = LoadCells(seqPath, '_demo');
+cells = LoadCells(seqPath);
 % Remove detected objects that are not cells.
 cells = AreCells(cells);
 
@@ -38,3 +38,5 @@ plot(t, numberOfCells, 'LineWidth', 2)
 xlabel('time (hours)')
 ylabel('number of cells')
 ylim([0 16])  % Change the limits on the y-axis.
+
+disp
